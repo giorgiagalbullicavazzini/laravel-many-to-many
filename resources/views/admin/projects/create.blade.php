@@ -35,7 +35,6 @@
                         <label class="form-check-label" for="technologies">{{ $technology->name }}</label>
                     </div>
                 @endforeach
-
             </div>
             <div class="mb-3">
                 <div class="image-preview">
