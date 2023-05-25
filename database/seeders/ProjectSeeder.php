@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use Faker\Generator as Faker;
 use App\Models\Project;
 use App\Models\Type;
+use Illuminate\Support\Facades\Schema;
 use Illuminate\Support\Str;
 
 class ProjectSeeder extends Seeder
@@ -18,7 +19,9 @@ class ProjectSeeder extends Seeder
      */
     public function run(Faker $faker)
     {
+        Schema::disableForeignKeyConstraints();
         Project::truncate();
+        Schema::enableForeignKeyConstraints();
 
         for ($i = 1; $i <= 10; $i++) {
 
@@ -32,7 +35,6 @@ class ProjectSeeder extends Seeder
             $newProject->slug = Str::slug($newProject->title, '-');
             $newProject->status = $faker->word();
             $newProject->release_date = $faker->date();
-            $newProject->languages = $faker->randomElement(['html', 'css', 'bootstrap', 'scss', 'javascript', 'vuejs', 'php', 'laravel']);
 
             $newProject->save();
         }
