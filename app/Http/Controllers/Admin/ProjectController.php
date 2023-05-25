@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Models\Project;
 use App\Http\Requests\StoreProjectRequest;
 use App\Http\Requests\UpdateProjectRequest;
+use App\Models\Technology;
 use App\Models\Type;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
@@ -32,8 +33,9 @@ class ProjectController extends Controller
     public function create()
     {
         $types = Type::all();
+        $technologies = Technology::all();
 
-        return view('admin.projects.create', compact('types'));
+        return view('admin.projects.create', compact('types', 'technologies'));
     }
 
     /**
@@ -53,9 +55,13 @@ class ProjectController extends Controller
         if(isset($data['image'])) {
             $newProject->image = Storage::put('uploads', $data['image']);
         }
-
+        
         $newProject->save();
-
+        
+        if(isset($data['technologies'])) {
+            $newProject->technologies()->attach($data['technologies']);
+        }
+        
         return redirect()->route('admin.projects.index')->with('message', 'Progetto creato con successo');
     }
 
